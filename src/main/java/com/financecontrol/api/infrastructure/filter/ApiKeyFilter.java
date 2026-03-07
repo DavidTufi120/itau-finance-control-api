@@ -37,17 +37,23 @@ public class ApiKeyFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String receivedApiKey = httpRequest.getHeader(ApiKeyConstants.API_KEY_HEADER);
-
-        if (!securityProperties.apiKey().equals(receivedApiKey)) {
+        if (!isPublicPath(httpRequest) && !isValidApiKey(httpRequest)) {
             logger.warn("Requisicao bloqueada: api-key invalida ou ausente. IP: {}, URI: {}",
                     httpRequest.getRemoteAddr(), httpRequest.getRequestURI());
-
             writeUnauthorizedResponse(httpResponse);
             return;
         }
 
         chain.doFilter(request, response);
+    }
+
+    private boolean isPublicPath(HttpServletRequest request) {
+        return request.getRequestURI().startsWith(ApiKeyConstants.ACTUATOR_PATH);
+    }
+
+    private boolean isValidApiKey(HttpServletRequest request) {
+        String receivedApiKey = request.getHeader(ApiKeyConstants.API_KEY_HEADER);
+        return securityProperties.apiKey().equals(receivedApiKey);
     }
 
     private void writeUnauthorizedResponse(HttpServletResponse httpResponse) throws IOException {
