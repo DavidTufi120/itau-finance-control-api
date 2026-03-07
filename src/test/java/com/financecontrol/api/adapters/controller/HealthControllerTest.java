@@ -1,10 +1,9 @@
 package com.financecontrol.api.adapters.controller;
 
+import com.financecontrol.api.adapters.controller.response.HealthResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,13 +13,10 @@ class HealthControllerTest {
 
     @Test
     void shouldReturnStatusUp() {
-        ResponseEntity<Map<String, String>> response = healthController.getHealth();
+        ResponseEntity<HealthResponse> response = healthController.getHealth();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).containsEntry("status", "UP");
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().status()).isEqualTo("UP");
     }
 }
-
-
-
-
