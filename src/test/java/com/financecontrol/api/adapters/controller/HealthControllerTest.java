@@ -12,7 +12,7 @@ class HealthControllerTest {
     private final HealthController healthController = new HealthController();
 
     @Test
-    void shouldReturnStatusUp() {
+    void deveriaRetornarStatusUp() {
         ResponseEntity<HealthResponse> response = healthController.getHealth();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

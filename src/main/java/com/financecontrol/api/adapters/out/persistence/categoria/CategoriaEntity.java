@@ -21,9 +21,6 @@ class CategoriaEntity {
     @Column(nullable = false, unique = true, length = 100)
     private String nome;
 
-    protected CategoriaEntity() {
-    }
-
     CategoriaEntity(Long id, String nome) {
         this.id = id;
         this.nome = nome;
