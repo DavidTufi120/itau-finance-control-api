@@ -48,7 +48,10 @@ public class ApiKeyFilter implements Filter {
     }
 
     private boolean isPublicPath(HttpServletRequest request) {
-        return request.getRequestURI().startsWith(ApiKeyConstants.ACTUATOR_PATH);
+        String uri = request.getRequestURI();
+        return uri.startsWith(ApiKeyConstants.ACTUATOR_PATH)
+                || uri.startsWith(ApiKeyConstants.SWAGGER_UI_PATH)
+                || uri.startsWith(ApiKeyConstants.OPENAPI_DOCS_PATH);
     }
 
     private boolean isValidApiKey(HttpServletRequest request) {

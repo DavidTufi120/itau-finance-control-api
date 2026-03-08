@@ -24,7 +24,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/v1/categorias")
-public class CategoriaController {
+public class CategoriaController implements CategoriaControllerDocs {
 
     private final CategoriaService categoriaService;
 
@@ -32,6 +32,7 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<PageResponse<CategoriaResponse>> listar(
             @RequestParam(required = false) String nome,
@@ -43,11 +44,13 @@ public class CategoriaController {
         return ResponseEntity.ok(resposta);
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(toResponse(categoriaService.buscarPorId(id)));
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<CategoriaResponse> criar(@RequestBody @Valid CategoriaRequest request) {
         Categoria categoriaCriada = categoriaService.criar(Categoria.criar(request.nome()));
@@ -58,6 +61,7 @@ public class CategoriaController {
         return ResponseEntity.created(location).body(toResponse(categoriaCriada));
     }
 
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<CategoriaResponse> atualizar(
             @PathVariable Long id,
@@ -66,6 +70,7 @@ public class CategoriaController {
         return ResponseEntity.ok(toResponse(categoriaAtualizada));
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         categoriaService.deletar(id);
