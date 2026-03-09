@@ -14,5 +14,8 @@ public final class MensagensErro {
 
     public static final String CATEGORIA_NAO_ENCONTRADA = "Categoria não encontrada com id: ";
     public static final String CATEGORIA_NOME_DUPLICADO = "Já existe uma categoria com o nome: ";
+
+    public static final String SUBCATEGORIA_NAO_ENCONTRADA = "Subcategoria não encontrada com id: ";
+    public static final String SUBCATEGORIA_NOME_DUPLICADO = "Já existe uma subcategoria com o nome informado nesta categoria: ";
 }
 

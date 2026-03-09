@@ -111,6 +111,7 @@ public class GlobalExceptionHandler {
         return switch (codigo) {
             case "recurso_nao_encontrado" -> HttpStatus.NOT_FOUND;
             case "nome_invalido", "erro_validacao" -> HttpStatus.BAD_REQUEST;
+            case "operacao_nao_permitida" -> HttpStatus.UNPROCESSABLE_ENTITY;
             default -> HttpStatus.CONFLICT;
         };
     }
