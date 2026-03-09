@@ -31,4 +31,10 @@ class CategoriaEntityTest {
         CategoriaEntity entity = new CategoriaEntity(1L, "Transporte");
         assertThat(entity).isNotNull();
     }
+
+    @Test
+    void deveCriarEntityComConstrutorProtegidoSemParametros() {
+        CategoriaEntity entity = new CategoriaEntity();
+        assertThat(entity).isNotNull();
+    }
 }

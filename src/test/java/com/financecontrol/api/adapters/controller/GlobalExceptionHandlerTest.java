@@ -172,4 +172,33 @@ class GlobalExceptionHandlerTest {
         assertThat(resposta.getBody()).isNotNull();
         assertThat(resposta.getBody().codigo()).isEqualTo("erro_validacao");
     }
+
+    @Test
+    void deveRetornar422QuandoNegocioExceptionForOperacaoNaoPermitida() {
+        NegocioException exception = new NegocioException(
+                "operacao_nao_permitida",
+                "Não é possível remover uma subcategoria com lançamentos atrelados"
+        );
+
+        ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleNegocioException(exception, request);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().codigo()).isEqualTo("operacao_nao_permitida");
+        assertThat(resposta.getBody().mensagem()).contains("lançamentos");
+    }
+
+    @Test
+    void deveRetornar409QuandoNegocioExceptionUsarCodigoDesconhecido() {
+        NegocioException exception = new NegocioException(
+                "codigo_desconhecido",
+                "Erro genérico de negócio"
+        );
+
+        ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleNegocioException(exception, request);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().codigo()).isEqualTo("codigo_desconhecido");
+    }
 }
