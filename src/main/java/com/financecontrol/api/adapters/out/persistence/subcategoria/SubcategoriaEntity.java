@@ -13,6 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import com.financecontrol.api.adapters.out.persistence.categoria.CategoriaEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(
@@ -34,6 +36,7 @@ class SubcategoriaEntity {
     private String nome;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "categoria_id", nullable = false, foreignKey = @ForeignKey(name = "fk_subcategoria_categoria"))
     private CategoriaEntity categoria;
 

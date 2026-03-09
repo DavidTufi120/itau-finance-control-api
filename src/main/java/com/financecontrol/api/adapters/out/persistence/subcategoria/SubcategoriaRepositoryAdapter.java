@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Component
 public class SubcategoriaRepositoryAdapter implements SubcategoriaRepositoryPort {
+
     private final SubcategoriaJpaRepository jpaRepository;
     private final CategoriaJpaRepository categoriaJpaRepository;
     private final SubcategoriaMapper mapper;
@@ -45,14 +46,14 @@ public class SubcategoriaRepositoryAdapter implements SubcategoriaRepositoryPort
     }
 
     @Override
-    public PaginaResultado<Subcategoria> findByIdSubcategoria(Long idSubcategoria, ParametrosPaginacao paginacao) {
-        Page<SubcategoriaEntity> pagina = jpaRepository.findByCategoriaId(idSubcategoria, toPageRequest(paginacao));
+    public PaginaResultado<Subcategoria> findByIdPaginado(Long idSubcategoria, ParametrosPaginacao paginacao) {
+        Page<SubcategoriaEntity> pagina = jpaRepository.findById(idSubcategoria, toPageRequest(paginacao));
         return toPaginaResultado(pagina);
     }
 
     @Override
-    public PaginaResultado<Subcategoria> findByNomeContendoEIdSubcategoria(String nome, Long idSubcategoria, ParametrosPaginacao paginacao) {
-        Page<SubcategoriaEntity> pagina = jpaRepository.findByNomeContainingIgnoreCaseAndCategoriaId(nome, idSubcategoria, toPageRequest(paginacao));
+    public PaginaResultado<Subcategoria> findByNomeContendoEId(String nome, Long idSubcategoria, ParametrosPaginacao paginacao) {
+        Page<SubcategoriaEntity> pagina = jpaRepository.findByNomeContainingIgnoreCaseAndId(nome, idSubcategoria, toPageRequest(paginacao));
         return toPaginaResultado(pagina);
     }
 

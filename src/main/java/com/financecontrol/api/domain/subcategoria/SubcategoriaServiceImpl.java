@@ -40,15 +40,16 @@ public class SubcategoriaServiceImpl implements SubcategoriaService {
     @Transactional(readOnly = true)
     public PaginaResultado<Subcategoria> listar(String nome, Long idSubcategoria, ParametrosPaginacao paginacao) {
         boolean temNome = nome != null && !nome.isBlank();
-        boolean temIdSubcategoria = idSubcategoria != null;
-        if (temNome && temIdSubcategoria) {
-            return subcategoriaRepositoryPort.findByNomeContendoEIdSubcategoria(nome, idSubcategoria, paginacao);
+        boolean temId = idSubcategoria != null;
+
+        if (temNome && temId) {
+            return subcategoriaRepositoryPort.findByNomeContendoEId(nome, idSubcategoria, paginacao);
         }
         if (temNome) {
             return subcategoriaRepositoryPort.findByNomeContendo(nome, paginacao);
         }
-        if (temIdSubcategoria) {
-            return subcategoriaRepositoryPort.findByIdSubcategoria(idSubcategoria, paginacao);
+        if (temId) {
+            return subcategoriaRepositoryPort.findByIdPaginado(idSubcategoria, paginacao);
         }
         return subcategoriaRepositoryPort.findAll(paginacao);
     }

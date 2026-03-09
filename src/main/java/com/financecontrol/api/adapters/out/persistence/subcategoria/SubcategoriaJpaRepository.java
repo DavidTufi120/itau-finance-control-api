@@ -12,7 +12,7 @@ interface SubcategoriaJpaRepository extends JpaRepository<SubcategoriaEntity, Lo
 
     Page<SubcategoriaEntity> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 
-    Page<SubcategoriaEntity> findByCategoriaId(Long idCategoria, Pageable pageable);
+    Page<SubcategoriaEntity> findById(Long id, Pageable pageable);
 
-    Page<SubcategoriaEntity> findByNomeContainingIgnoreCaseAndCategoriaId(String nome, Long idCategoria, Pageable pageable);
+    Page<SubcategoriaEntity> findByNomeContainingIgnoreCaseAndId(String nome, Long id, Pageable pageable);
 }

@@ -34,7 +34,7 @@ public class SubcategoriaController {
     @GetMapping
     public ResponseEntity<PageResponse<SubcategoriaResponse>> listar(
             @RequestParam(required = false) String nome,
-            @RequestParam(required = false) Long idSubcategoria,
+            @RequestParam(name = "id_subcategoria", required = false) Long idSubcategoria,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         ParametrosPaginacao paginacao = new ParametrosPaginacao(page, size);

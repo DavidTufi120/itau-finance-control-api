@@ -12,14 +12,13 @@ public interface SubcategoriaRepositoryPort {
 
     PaginaResultado<Subcategoria> findByNomeContendo(String nome, ParametrosPaginacao paginacao);
 
-    PaginaResultado<Subcategoria> findByIdSubcategoria(Long idSubcategoria, ParametrosPaginacao paginacao);
+    PaginaResultado<Subcategoria> findByIdPaginado(Long idSubcategoria, ParametrosPaginacao paginacao);
 
-    PaginaResultado<Subcategoria> findByNomeContendoEIdSubcategoria(String nome, Long idSubcategoria, ParametrosPaginacao paginacao);
+    PaginaResultado<Subcategoria> findByNomeContendoEId(String nome, Long idSubcategoria, ParametrosPaginacao paginacao);
 
     boolean existsByNomeAndIdCategoria(String nome, Long idCategoria);
 
     boolean existsByNomeAndIdCategoriaAndIdDiferente(String nome, Long idCategoria, Long id);
-
 
     Subcategoria save(Subcategoria subcategoria);
 
