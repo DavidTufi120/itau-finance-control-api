@@ -1,5 +1,6 @@
 package com.financecontrol.api.domain.categoria;
 
+import com.financecontrol.api.domain.lancamento.LancamentoRepositoryPort;
 import com.financecontrol.api.domain.shared.MensagensErro;
 import com.financecontrol.api.domain.shared.NegocioException;
 import com.financecontrol.api.domain.shared.ParametrosPaginacao;
@@ -15,9 +16,12 @@ public class CategoriaServiceImpl implements CategoriaService {
     private static final Logger logger = LoggerFactory.getLogger(CategoriaServiceImpl.class);
 
     private final CategoriaRepositoryPort categoriaRepositoryPort;
+    private final LancamentoRepositoryPort lancamentoRepositoryPort;
 
-    public CategoriaServiceImpl(CategoriaRepositoryPort categoriaRepositoryPort) {
+    public CategoriaServiceImpl(CategoriaRepositoryPort categoriaRepositoryPort,
+                                LancamentoRepositoryPort lancamentoRepositoryPort) {
         this.categoriaRepositoryPort = categoriaRepositoryPort;
+        this.lancamentoRepositoryPort = lancamentoRepositoryPort;
     }
 
     @Override
@@ -88,12 +92,21 @@ public class CategoriaServiceImpl implements CategoriaService {
     public void deletar(Long id) {
         categoriaRepositoryPort.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Categoria nao encontrada. id={}", id);
+                    logger.warn("Categoria nao encontrada para remover. id={}", id);
                     return new NegocioException(
                             MensagensErro.CODIGO_RECURSO_NAO_ENCONTRADO,
                             MensagensErro.CATEGORIA_NAO_ENCONTRADA + id
                     );
                 });
+
+        if (lancamentoRepositoryPort.existsByIdCategoria(id)) {
+            logger.warn("Tentativa de remover categoria com lancamentos atrelados a subcategorias. id={}", id);
+            throw new NegocioException(
+                    MensagensErro.CODIGO_OPERACAO_NAO_PERMITIDA,
+                    MensagensErro.CATEGORIA_COM_LANCAMENTOS
+            );
+        }
+
         categoriaRepositoryPort.deleteById(id);
         logger.info("Categoria removida com sucesso. id={}", id);
     }
