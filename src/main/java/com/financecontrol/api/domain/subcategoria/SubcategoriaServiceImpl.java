@@ -2,6 +2,7 @@ package com.financecontrol.api.domain.subcategoria;
 
 import com.financecontrol.api.domain.categoria.Categoria;
 import com.financecontrol.api.domain.categoria.CategoriaRepositoryPort;
+import com.financecontrol.api.domain.lancamento.LancamentoRepositoryPort;
 import com.financecontrol.api.domain.shared.MensagensErro;
 import com.financecontrol.api.domain.shared.NegocioException;
 import com.financecontrol.api.domain.shared.ParametrosPaginacao;
@@ -16,11 +17,14 @@ public class SubcategoriaServiceImpl implements SubcategoriaService {
     private static final Logger logger = LoggerFactory.getLogger(SubcategoriaServiceImpl.class);
     private final SubcategoriaRepositoryPort subcategoriaRepositoryPort;
     private final CategoriaRepositoryPort categoriaRepositoryPort;
+    private final LancamentoRepositoryPort lancamentoRepositoryPort;
 
     public SubcategoriaServiceImpl(SubcategoriaRepositoryPort subcategoriaRepositoryPort,
-                                   CategoriaRepositoryPort categoriaRepositoryPort) {
+                                   CategoriaRepositoryPort categoriaRepositoryPort,
+                                   LancamentoRepositoryPort lancamentoRepositoryPort) {
         this.subcategoriaRepositoryPort = subcategoriaRepositoryPort;
         this.categoriaRepositoryPort = categoriaRepositoryPort;
+        this.lancamentoRepositoryPort = lancamentoRepositoryPort;
     }
 
     @Override
@@ -135,6 +139,13 @@ public class SubcategoriaServiceImpl implements SubcategoriaService {
                             MensagensErro.SUBCATEGORIA_NAO_ENCONTRADA + id
                     );
                 });
+        if (lancamentoRepositoryPort.existsByIdSubcategoria(id)) {
+            logger.warn("Tentativa de remover subcategoria com lancamentos atrelados. id={}", id);
+            throw new NegocioException(
+                    MensagensErro.CODIGO_OPERACAO_NAO_PERMITIDA,
+                    MensagensErro.SUBCATEGORIA_COM_LANCAMENTOS
+            );
+        }
         subcategoriaRepositoryPort.deleteById(id);
         logger.info("Subcategoria removida com sucesso. id={}", id);
     }

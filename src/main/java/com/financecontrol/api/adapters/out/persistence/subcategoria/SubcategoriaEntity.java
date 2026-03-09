@@ -27,7 +27,7 @@ import org.hibernate.annotations.OnDeleteAction;
                 @UniqueConstraint(name = "uq_subcategoria_nome_categoria", columnNames = {"nome", "categoria_id"})
         }
 )
-class SubcategoriaEntity {
+public class SubcategoriaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,7 +49,7 @@ class SubcategoriaEntity {
     protected SubcategoriaEntity() {
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 

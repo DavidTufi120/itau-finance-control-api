@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface SubcategoriaJpaRepository extends JpaRepository<SubcategoriaEntity, Long> {
+public interface SubcategoriaJpaRepository extends JpaRepository<SubcategoriaEntity, Long> {
 
     boolean existsByNomeAndCategoriaId(String nome, Long idCategoria);
 
