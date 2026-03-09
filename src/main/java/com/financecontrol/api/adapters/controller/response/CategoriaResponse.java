@@ -1,7 +1,7 @@
 package com.financecontrol.api.adapters.controller.response;
 
 public record CategoriaResponse(
-        Long idCategoria,
+        Long id_categoria,
         String nome
 ) {}
 

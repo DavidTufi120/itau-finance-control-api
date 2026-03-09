@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface CategoriaJpaRepository extends JpaRepository<CategoriaEntity, Long> {
+public interface CategoriaJpaRepository extends JpaRepository<CategoriaEntity, Long> {
 
     boolean existsByNome(String nome);
 

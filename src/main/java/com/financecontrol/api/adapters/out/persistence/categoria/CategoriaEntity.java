@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 @Table(name = "categorias", indexes = {
         @Index(name = "idx_categoria_nome", columnList = "nome")
 })
-class CategoriaEntity {
+public class CategoriaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,20 +21,23 @@ class CategoriaEntity {
     @Column(nullable = false, unique = true, length = 100)
     private String nome;
 
-    CategoriaEntity(Long id, String nome) {
+    public CategoriaEntity(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    Long getId() {
+    protected CategoriaEntity() {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    String getNome() {
+    public String getNome() {
         return nome;
     }
 
-    void setNome(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
 }
