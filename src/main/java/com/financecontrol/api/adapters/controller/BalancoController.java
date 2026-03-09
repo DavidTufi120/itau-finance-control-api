@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/v1/balanco")
-public class BalancoController {
+public class BalancoController implements BalancoControllerDocs {
 
     private final BalancoService balancoService;
 
