@@ -77,11 +77,13 @@ public interface SubcategoriaControllerDocs {
                     content = @Content(schema = @Schema(implementation = SubcategoriaRequest.class)))
             @RequestBody @Valid SubcategoriaRequest request);
 
-    @Operation(summary = "Deletar subcategoria", description = "Remove uma subcategoria pelo ID.")
+    @Operation(summary = "Deletar subcategoria", description = "Remove uma subcategoria pelo ID. Não é permitido remover uma subcategoria que possua lançamentos atrelados.")
     @ApiResponse(responseCode = "204", description = "Subcategoria removida com sucesso")
     @ApiResponse(responseCode = "401", description = "api-key ausente ou inválida",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     @ApiResponse(responseCode = "404", description = "Subcategoria não encontrada",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
+    @ApiResponse(responseCode = "422", description = "Subcategoria possui lançamentos atrelados e não pode ser removida",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     ResponseEntity<Void> deletar(
             @Parameter(description = "ID da subcategoria a ser removida", required = true, example = "1") @PathVariable Long id);

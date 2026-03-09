@@ -24,7 +24,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/v1/subcategorias")
-public class SubcategoriaController {
+public class SubcategoriaController implements SubcategoriaControllerDocs {
     private final SubcategoriaService subcategoriaService;
 
     public SubcategoriaController(SubcategoriaService subcategoriaService) {

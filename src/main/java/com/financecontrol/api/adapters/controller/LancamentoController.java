@@ -23,7 +23,7 @@ import java.net.URI;
 import java.time.LocalDate;
 @RestController
 @RequestMapping("/v1/lancamentos")
-public class LancamentoController {
+public class LancamentoController implements LancamentoControllerDocs {
     private final LancamentoService lancamentoService;
     public LancamentoController(LancamentoService lancamentoService) {
         this.lancamentoService = lancamentoService;
