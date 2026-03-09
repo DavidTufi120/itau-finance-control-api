@@ -101,9 +101,45 @@ O Swagger já vem configurado com o campo `api-key` no header. Basta clicar em *
 | `GET` | `/v1/categorias/{id}` | Busca uma categoria pelo ID |
 | `POST` | `/v1/categorias` | Cria uma nova categoria |
 | `PUT` | `/v1/categorias/{id}` | Atualiza o nome de uma categoria |
-| `DELETE` | `/v1/categorias/{id}` | Remove uma categoria |
+| `DELETE` | `/v1/categorias/{id}` | Remove uma categoria (não permitido se houver lançamentos nas subcategorias) |
 
-> Para detalhes de campos, exemplos de request/response e códigos de erro, consulte o **Swagger**: `http://localhost:8080/swagger-ui.html`
+---
+
+### Subcategorias
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/v1/subcategorias` | Lista subcategorias. Filtros opcionais: `nome`, `id_subcategoria`, `page`, `size` |
+| `GET` | `/v1/subcategorias/{id}` | Busca uma subcategoria pelo ID |
+| `POST` | `/v1/subcategorias` | Cria uma nova subcategoria |
+| `PUT` | `/v1/subcategorias/{id}` | Atualiza uma subcategoria |
+| `DELETE` | `/v1/subcategorias/{id}` | Remove uma subcategoria (não permitido se houver lançamentos atrelados) |
+
+---
+
+### Lançamentos
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/v1/lancamentos` | Lista lançamentos. Filtros opcionais: `id_subcategoria`, `data_inicio` (dd/MM/yyyy), `data_fim` (dd/MM/yyyy), `page`, `size` |
+| `GET` | `/v1/lancamentos/{id}` | Busca um lançamento pelo ID |
+| `POST` | `/v1/lancamentos` | Cria um novo lançamento |
+| `PUT` | `/v1/lancamentos/{id}` | Atualiza um lançamento |
+| `DELETE` | `/v1/lancamentos/{id}` | Remove um lançamento |
+
+---
+
+### Balanço
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/v1/balanco` | Consulta o balanço geral de um período. Obrigatórios: `data_inicio` (dd/MM/yyyy), `data_fim` (dd/MM/yyyy). Opcional: `id_categoria` |
+
+> O campo `categoria` só é retornado quando `id_categoria` é informado. O balanço é calculado em tempo real com base nos lançamentos existentes, sem gravar nada no banco.
+
+---
+
+> Para detalhes de campos, exemplos de request/response e códigos de erro, consulte o [**Swagger**](http://localhost:8080/swagger-ui.html).
 
 ---
 
