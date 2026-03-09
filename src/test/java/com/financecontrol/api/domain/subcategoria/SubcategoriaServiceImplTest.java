@@ -2,6 +2,7 @@ package com.financecontrol.api.domain.subcategoria;
 
 import com.financecontrol.api.domain.categoria.Categoria;
 import com.financecontrol.api.domain.categoria.CategoriaRepositoryPort;
+import com.financecontrol.api.domain.lancamento.LancamentoRepositoryPort;
 import com.financecontrol.api.domain.shared.MensagensErro;
 import com.financecontrol.api.domain.shared.NegocioException;
 import com.financecontrol.api.domain.shared.ParametrosPaginacao;
@@ -31,6 +32,9 @@ class SubcategoriaServiceImplTest {
 
     @Mock
     private CategoriaRepositoryPort categoriaRepositoryPort;
+
+    @Mock
+    private LancamentoRepositoryPort lancamentoRepositoryPort;
 
     @InjectMocks
     private SubcategoriaServiceImpl subcategoriaService;
@@ -273,10 +277,24 @@ class SubcategoriaServiceImplTest {
     @Test
     void deveDeletarSubcategoriaComSucesso() {
         when(subcategoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(subcategoriaCombutivel));
+        when(lancamentoRepositoryPort.existsByIdSubcategoria(1L)).thenReturn(false);
 
         subcategoriaService.deletar(1L);
 
         verify(subcategoriaRepositoryPort).deleteById(1L);
+    }
+
+    @Test
+    void deveLancarExcecaoAoDeletarSubcategoriaComLancamentosAtrelados() {
+        when(subcategoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(subcategoriaCombutivel));
+        when(lancamentoRepositoryPort.existsByIdSubcategoria(1L)).thenReturn(true);
+
+        assertThatThrownBy(() -> subcategoriaService.deletar(1L))
+                .isInstanceOf(NegocioException.class)
+                .extracting("codigo")
+                .isEqualTo(MensagensErro.CODIGO_OPERACAO_NAO_PERMITIDA);
+
+        verify(subcategoriaRepositoryPort, never()).deleteById(any());
     }
 
     @Test

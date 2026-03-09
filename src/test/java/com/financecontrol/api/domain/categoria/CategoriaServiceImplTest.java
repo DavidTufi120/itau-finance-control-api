@@ -1,5 +1,6 @@
 package com.financecontrol.api.domain.categoria;
 
+import com.financecontrol.api.domain.lancamento.LancamentoRepositoryPort;
 import com.financecontrol.api.domain.shared.MensagensErro;
 import com.financecontrol.api.domain.shared.NegocioException;
 import com.financecontrol.api.domain.shared.PaginaResultado;
@@ -25,6 +26,8 @@ import static org.mockito.Mockito.when;
 class CategoriaServiceImplTest {
     @Mock
     private CategoriaRepositoryPort categoriaRepositoryPort;
+    @Mock
+    private LancamentoRepositoryPort lancamentoRepositoryPort;
     @InjectMocks
     private CategoriaServiceImpl categoriaService;
     private Categoria categoriaTransporte;
@@ -178,8 +181,20 @@ class CategoriaServiceImplTest {
     @Test
     void deveDeletarCategoriaComSucesso() {
         when(categoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(categoriaTransporte));
+        when(lancamentoRepositoryPort.existsByIdCategoria(1L)).thenReturn(false);
         categoriaService.deletar(1L);
         verify(categoriaRepositoryPort).deleteById(1L);
+    }
+
+    @Test
+    void deveLancarExcecaoAoDeletarCategoriaComLancamentosAtrelados() {
+        when(categoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(categoriaTransporte));
+        when(lancamentoRepositoryPort.existsByIdCategoria(1L)).thenReturn(true);
+        assertThatThrownBy(() -> categoriaService.deletar(1L))
+                .isInstanceOf(NegocioException.class)
+                .extracting("codigo")
+                .isEqualTo(MensagensErro.CODIGO_OPERACAO_NAO_PERMITIDA);
+        verify(categoriaRepositoryPort, never()).deleteById(any());
     }
 
     @Test

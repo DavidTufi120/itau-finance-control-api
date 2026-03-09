@@ -40,7 +40,7 @@ public class SubcategoriaEntity {
     @JoinColumn(name = "categoria_id", nullable = false, foreignKey = @ForeignKey(name = "fk_subcategoria_categoria"))
     private CategoriaEntity categoria;
 
-    SubcategoriaEntity(Long id, String nome, CategoriaEntity categoria) {
+    public SubcategoriaEntity(Long id, String nome, CategoriaEntity categoria) {
         this.id = id;
         this.nome = nome;
         this.categoria = categoria;
@@ -53,7 +53,7 @@ public class SubcategoriaEntity {
         return id;
     }
 
-    String getNome() {
+    public String getNome() {
         return nome;
     }
 

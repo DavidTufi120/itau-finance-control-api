@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 
-interface LancamentoJpaRepository extends JpaRepository<LancamentoEntity, Long> {
+public interface LancamentoJpaRepository extends JpaRepository<LancamentoEntity, Long> {
 
     boolean existsBySubcategoriaId(Long idSubcategoria);
 

@@ -5,9 +5,9 @@ import com.financecontrol.api.domain.lancamento.Lancamento;
 import org.springframework.stereotype.Component;
 
 @Component
-class LancamentoMapper {
+public class LancamentoMapper {
 
-    Lancamento toDomain(LancamentoEntity entity) {
+    public Lancamento toDomain(LancamentoEntity entity) {
         return new Lancamento(
                 entity.getId(),
                 entity.getValor(),
@@ -17,7 +17,7 @@ class LancamentoMapper {
         );
     }
 
-    LancamentoEntity toEntity(Lancamento lancamento, SubcategoriaEntity subcategoriaEntity) {
+    public LancamentoEntity toEntity(Lancamento lancamento, SubcategoriaEntity subcategoriaEntity) {
         return new LancamentoEntity(
                 lancamento.getId(),
                 lancamento.getValor(),

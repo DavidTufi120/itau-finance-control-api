@@ -26,7 +26,7 @@ import java.time.LocalDate;
                 @Index(name = "idx_lancamento_subcategoria_id", columnList = "subcategoria_id")
         }
 )
-class LancamentoEntity {
+public class LancamentoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +46,7 @@ class LancamentoEntity {
     @Column(length = 500)
     private String comentario;
 
-    LancamentoEntity(Long id, BigDecimal valor, LocalDate data, SubcategoriaEntity subcategoria, String comentario) {
+    public LancamentoEntity(Long id, BigDecimal valor, LocalDate data, SubcategoriaEntity subcategoria, String comentario) {
         this.id = id;
         this.valor = valor;
         this.data = data;
@@ -54,42 +54,42 @@ class LancamentoEntity {
         this.comentario = comentario;
     }
 
-    protected LancamentoEntity() {
+    public LancamentoEntity() {
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 
-    BigDecimal getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    LocalDate getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    SubcategoriaEntity getSubcategoria() {
+    public SubcategoriaEntity getSubcategoria() {
         return subcategoria;
     }
 
-    String getComentario() {
+    public String getComentario() {
         return comentario;
     }
 
-    void setValor(BigDecimal valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
-    void setData(LocalDate data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-    void setSubcategoria(SubcategoriaEntity subcategoria) {
+    public void setSubcategoria(SubcategoriaEntity subcategoria) {
         this.subcategoria = subcategoria;
     }
 
-    void setComentario(String comentario) {
+    public void setComentario(String comentario) {
         this.comentario = comentario;
     }
 }
