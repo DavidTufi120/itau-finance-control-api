@@ -270,6 +270,46 @@ GET /actuator/metrics/hikaricp.connections.active
 
 ---
 
+## Deploy na nuvem (Railway)
+
+A API está publicada gratuitamente no **Railway** com banco MySQL provisionado na nuvem.
+
+### Acessar a API em produção
+
+| Recurso | URL |
+|---|---|
+| API Base | `https://itau-finance-control-api.up.railway.app` |
+| Swagger UI | `https://itau-finance-control-api.up.railway.app/swagger-ui.html` |
+| Health | `https://itau-finance-control-api.up.railway.app/actuator/health` |
+
+> Todas as requisições exigem o header `api-key: aXRhw7o=`.
+
+---
+
+### Como fazer o deploy no Railway (passo a passo)
+
+1. Acesse [railway.app](https://railway.app) e faça login com sua conta GitHub
+2. Clique em **New Project → Deploy from GitHub repo**
+3. Selecione o repositório `itau-finance-control-api`
+4. Clique em **Add Service → Database → MySQL** para provisionar o banco
+5. Nas variáveis de ambiente do serviço da API, configure:
+
+| Variável | Valor |
+|---|---|
+| `SPRING_PROFILES_ACTIVE` | `prod` |
+| `DB_URL` | `jdbc:mysql://<host_railway>:3306/<db_name>?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC` |
+| `DB_USERNAME` | _(copiar do painel MySQL do Railway)_ |
+| `DB_PASSWORD` | _(copiar do painel MySQL do Railway)_ |
+| `DB_DRIVER` | `com.mysql.cj.jdbc.Driver` |
+| `API_KEY` | `aXRhw7o=` |
+
+6. O Railway detecta o `Dockerfile` automaticamente e faz o build
+7. Após o deploy, acesse a URL gerada pelo Railway
+
+> O arquivo `railway.toml` na raiz do projeto já configura o builder, healthcheck e restart policy automaticamente.
+
+---
+
 ## Testes
 
 ```bash
