@@ -141,9 +141,10 @@ Requisições sem esse header retornam `401 Unauthorized`.
 
 ## Documentação Swagger
 
-Com a aplicação rodando, acesse:
-
-[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+| Ambiente | URL |
+|---|---|
+| Local | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+| Produção | [https://itau-finance-control-api-production.up.railway.app/swagger-ui.html](https://itau-finance-control-api-production.up.railway.app/swagger-ui.html) |
 
 O Swagger já vem configurado com o campo `api-key` no header. Basta clicar em **Authorize**, informar o valor `aXRhw7o=` e todas as requisições feitas pela interface já incluirão o header automaticamente.
 
@@ -278,9 +279,9 @@ A API está publicada gratuitamente no **Railway** com banco MySQL provisionado 
 
 | Recurso | URL |
 |---|---|
-| API Base | `https://itau-finance-control-api.up.railway.app` |
-| Swagger UI | `https://itau-finance-control-api.up.railway.app/swagger-ui.html` |
-| Health | `https://itau-finance-control-api.up.railway.app/actuator/health` |
+| API Base | `https://itau-finance-control-api-production.up.railway.app` |
+| Swagger UI | `https://itau-finance-control-api-production.up.railway.app/swagger-ui.html` |
+| Health | `https://itau-finance-control-api-production.up.railway.app/actuator/health` |
 
 > Todas as requisições exigem o header `api-key: aXRhw7o=`.
 
