@@ -1,5 +1,7 @@
 # Finance Control API
 
+![CI](https://github.com/DavidTufi120/itau-finance-control-api/actions/workflows/ci.yml/badge.svg)
+
 API REST para controle de gastos e ganhos pessoais, desenvolvida como desafio técnico. Permite o cadastro de **categorias**, **subcategorias** e **lançamentos financeiros**, além de consulta de **balanço por período** com cálculo em tempo real.
 
 ---
