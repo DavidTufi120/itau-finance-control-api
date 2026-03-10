@@ -37,6 +37,11 @@ public class ApiKeyFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         if (!isPublicPath(httpRequest) && !isValidApiKey(httpRequest)) {
             logger.warn("Requisicao bloqueada: api-key invalida ou ausente. IP: {}, URI: {}",
                     httpRequest.getRemoteAddr(), httpRequest.getRequestURI());
