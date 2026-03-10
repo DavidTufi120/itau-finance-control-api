@@ -9,7 +9,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "categorias", indexes = {
+@Table(name = "categoria", indexes = {
         @Index(name = "idx_categoria_nome", columnList = "nome")
 })
 public class CategoriaEntity {

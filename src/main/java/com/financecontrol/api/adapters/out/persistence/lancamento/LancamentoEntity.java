@@ -20,7 +20,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(
-        name = "lancamentos",
+        name = "lancamento",
         indexes = {
                 @Index(name = "idx_lancamento_data", columnList = "data"),
                 @Index(name = "idx_lancamento_subcategoria_id", columnList = "subcategoria_id")

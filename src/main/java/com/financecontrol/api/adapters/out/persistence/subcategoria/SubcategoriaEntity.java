@@ -18,7 +18,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(
-        name = "subcategorias",
+        name = "subcategoria",
         indexes = {
                 @Index(name = "idx_subcategoria_nome", columnList = "nome"),
                 @Index(name = "idx_subcategoria_categoria_id", columnList = "categoria_id")
