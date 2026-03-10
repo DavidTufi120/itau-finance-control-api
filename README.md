@@ -37,20 +37,51 @@ com.financecontrol.api
 
 - Java 17+
 - Maven 3.8+
-- MySQL 8+ (apenas para produção)
+- Docker e Docker Compose (recomendado)
+- MySQL 8+ (apenas para produção sem Docker)
 
 ## Como rodar
 
-### Desenvolvimento (H2 em memória)
+### Com Docker (recomendado)
+
+Sobe a API junto com o MySQL com um único comando:
+
+```bash
+docker-compose up --build
+```
+
+A API estará disponível em `http://localhost:8080`.  
+O MySQL ficará disponível na porta `3306`.
+
+Para parar:
+
+```bash
+docker-compose down
+```
+
+Para parar e remover os dados do banco:
+
+```bash
+docker-compose down -v
+```
+
+---
+
+### Desenvolvimento local (H2 em memória)
 
 ```bash
 mvn spring-boot:run
 ```
 
-### Produção (MySQL)
+### Produção local (MySQL)
 
 ```bash
-SPRING_PROFILES_ACTIVE=prod DB_URL=jdbc:mysql://localhost:3306/finance_control DB_USERNAME=root DB_PASSWORD=root mvn spring-boot:run
+SPRING_PROFILES_ACTIVE=prod \
+  DB_URL=jdbc:mysql://localhost:3306/finance_control \
+  DB_USERNAME=finance \
+  DB_PASSWORD=itau-finance-control \
+  DB_DRIVER=com.mysql.cj.jdbc.Driver \
+  mvn spring-boot:run
 ```
 
 ### Variáveis de ambiente
@@ -62,6 +93,7 @@ SPRING_PROFILES_ACTIVE=prod DB_URL=jdbc:mysql://localhost:3306/finance_control D
 | `DB_URL` | URL de conexão com o banco | H2 em memória |
 | `DB_USERNAME` | Usuário do banco | `sa` |
 | `DB_PASSWORD` | Senha do banco | _(vazio)_ |
+| `DB_DRIVER` | Driver JDBC | `org.h2.Driver` |
 
 ## Autenticação
 
