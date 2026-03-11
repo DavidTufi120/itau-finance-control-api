@@ -19,5 +19,4 @@ COPY --from=build /app/src/main/resources/newrelic.yml /app/newrelic/newrelic.ym
 
 EXPOSE 8080
 
-ENTRYPOINT ["sh", "-c", "java -javaagent:/app/newrelic/newrelic.jar -Dnewrelic.environment=production -Dnewrelic.config.file=/app/newrelic/newrelic.yml -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY -Dnewrelic.config.app_name=${NEW_RELIC_APP_NAME:-finance-control-api} -jar /app/app.jar"]
-
+ENTRYPOINT ["sh", "-c", "LICENSE_KEY=\"$NEW_RELIC_LICENSE_KEY\"; if [ -z \"$LICENSE_KEY\" ]; then LICENSE_KEY=\"$NEW_RELIC_API_KEY\"; fi; APP_NAME=\"${NEW_RELIC_APP_NAME:-finance-control-api}\"; exec java -javaagent:/app/newrelic/newrelic.jar -Dnewrelic.environment=production -Dnewrelic.config.file=/app/newrelic/newrelic.yml -Dnewrelic.config.license_key=\"$LICENSE_KEY\" -Dnewrelic.config.app_name=\"$APP_NAME\" -jar /app/app.jar"]
