@@ -1,5 +1,5 @@
 common: &default_settings
-  license_key: ${NEW_RELIC_API_KEY}
+  license_key: ""
   app_name: finance-control-api
   distributed_tracing:
     enabled: true
