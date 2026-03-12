@@ -6,6 +6,22 @@ API REST para controle de gastos e ganhos pessoais, desenvolvida como desafio t�
 
 ---
 
+## Quick Start
+
+### 1) Rodar com Docker (recomendado)
+
+> No Windows, certifique-se de que o **Docker Desktop** está iniciado e com a **engine Linux** ativa antes de executar os comandos abaixo.
+
+```powershell
+docker compose up --build
+```
+
+### 2) Acessar a API
+
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- Health técnico: `http://localhost:8080/actuator/health`
+- Header obrigatório para rotas `/v1/**`: `api-key: aXRhw7o=`
+
 ## Tecnologias
 
 | Tecnologia | Versão | Finalidade |
@@ -72,8 +88,8 @@ com.financecontrol.api
 
 Sobe a API junto com o MySQL com um único comando:
 
-```bash
-docker-compose up --build
+```powershell
+docker compose up --build
 ```
 
 A API estará disponível em `http://localhost:8080`.  
@@ -81,21 +97,33 @@ O MySQL ficará disponível na porta `3306`.
 
 Para parar:
 
-```bash
-docker-compose down
+```powershell
+docker compose down
 ```
 
 Para parar e remover os dados do banco:
 
-```bash
-docker-compose down -v
+```powershell
+docker compose down -v
+```
+
+Para rodar em segundo plano:
+
+```powershell
+docker compose up --build -d
 ```
 
 ---
 
 ### Desenvolvimento local (H2 em memória)
 
-```bash
+Perfil padrão: `dev`
+
+- banco em memória **H2**
+- sem necessidade de MySQL local
+- ideal para desenvolvimento rápido
+
+```powershell
 mvn spring-boot:run
 ```
 
@@ -160,7 +188,9 @@ O Swagger já vem configurado com o campo `api-key` no header. Basta clicar em *
 
 | Método | Rota | Descrição |
 |---|---|---|
-| `GET` | `/v1/health` | Verifica se a aplicação está no ar |
+| `GET` | `/v1/health` | Health da API exposto na camada REST |
+
+> Além do endpoint acima, a aplicação também expõe `GET /actuator/health`, que é o health técnico do Spring Actuator e pode ser usado para monitoramento e healthcheck de infraestrutura.
 
 ---
 
@@ -313,8 +343,8 @@ A aplicação também está publicada no **Railway** para demonstração técnic
 
 ## Testes
 
-```bash
+```powershell
 mvn test
 ```
 
-O projeto possui cobertura de testes unitários de **99%**, sem uso de `@SpringBootTest` ou `@WebMvcTest` — todos os testes são unitários puros com JUnit 5 e Mockito.
+O projeto possui **alta cobertura de testes unitários**, sem uso de `@SpringBootTest` ou `@WebMvcTest` — os testes foram implementados com JUnit 5 e Mockito, cobrindo controllers, domínio, adapters de persistência, configurações e filtros.
