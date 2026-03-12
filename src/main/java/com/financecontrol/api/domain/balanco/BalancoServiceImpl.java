@@ -29,6 +29,13 @@ public class BalancoServiceImpl implements BalancoService {
     @Override
     @Transactional(readOnly = true)
     public Balanco calcular(LocalDate dataInicio, LocalDate dataFim, Long idCategoria) {
+        if (dataInicio.isAfter(dataFim)) {
+            throw new NegocioException(
+                    MensagensErro.CODIGO_ERRO_VALIDACAO,
+                    MensagensErro.PERIODO_INVALIDO
+            );
+        }
+
         Long idCategoriaFiltro = null;
         String nomeCategoria = null;
 
