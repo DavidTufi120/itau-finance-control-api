@@ -1,6 +1,7 @@
 package com.financecontrol.api.adapters.controller;
 
 import com.financecontrol.api.adapters.controller.response.ApiErrorResponse;
+import com.financecontrol.api.domain.shared.MensagensErro;
 import com.financecontrol.api.domain.shared.NegocioException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -109,9 +110,9 @@ public class GlobalExceptionHandler {
 
     private HttpStatus resolverStatus(String codigo) {
         return switch (codigo) {
-            case "recurso_nao_encontrado" -> HttpStatus.NOT_FOUND;
-            case "nome_invalido", "erro_validacao" -> HttpStatus.BAD_REQUEST;
-            case "operacao_nao_permitida" -> HttpStatus.UNPROCESSABLE_ENTITY;
+            case MensagensErro.CODIGO_RECURSO_NAO_ENCONTRADO -> HttpStatus.NOT_FOUND;
+            case MensagensErro.CODIGO_NOME_INVALIDO, MensagensErro.CODIGO_ERRO_VALIDACAO -> HttpStatus.BAD_REQUEST;
+            case MensagensErro.CODIGO_OPERACAO_NAO_PERMITIDA -> HttpStatus.UNPROCESSABLE_ENTITY;
             default -> HttpStatus.CONFLICT;
         };
     }
