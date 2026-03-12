@@ -76,7 +76,7 @@ class ApiKeyFilterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/actuator/health", "/actuator/metrics", "/swagger-ui/index.html", "/v3/api-docs"})
+    @ValueSource(strings = {"/actuator/health", "/swagger-ui/index.html", "/swagger-ui.html", "/v3/api-docs"})
     void devePermitirCaminhosPublicosSemApiKey(String caminho) throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -90,8 +90,20 @@ class ApiKeyFilterTest {
     void devePermitirCaminhoActuatorSemApiKey() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
-        request.setRequestURI(ApiKeyConstants.ACTUATOR_PATH + "/health");
+        request.setRequestURI(ApiKeyConstants.ACTUATOR_HEALTH_PATH);
         apiKeyFilter.doFilter(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    void deveBloquearEndpointMetricsSemApiKey() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.setRequestURI("/actuator/metrics");
+
+        apiKeyFilter.doFilter(request, response, filterChain);
+
+        verify(filterChain, never()).doFilter(request, response);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
 }
