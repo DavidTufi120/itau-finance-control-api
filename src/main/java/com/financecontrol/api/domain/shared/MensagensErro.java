@@ -9,10 +9,14 @@ public final class MensagensErro {
     public static final String CODIGO_NOME_INVALIDO = "nome_invalido";
     public static final String CODIGO_OPERACAO_NAO_PERMITIDA = "operacao_nao_permitida";
     public static final String CODIGO_VALOR_INVALIDO = "valor_invalido";
+    public static final String CODIGO_ERRO_VALIDACAO = "erro_validacao";
 
     public static final String CAMPO_NOME_OBRIGATORIO = "O campo 'nome' é obrigatório";
     public static final String CAMPO_NOME_TAMANHO_MAXIMO = "O campo 'nome' deve ter no maximo 100 caracteres";
     public static final String NOME_MUITO_CURTO = "O nome deve ter pelo menos 3 caracteres.";
+    public static final String PERIODO_INVALIDO = "O parâmetro 'data_inicio' não pode ser maior que 'data_fim'.";
+    public static final String PAGINA_INVALIDA = "O parâmetro 'page' deve ser maior ou igual a zero.";
+    public static final String TAMANHO_PAGINA_INVALIDO = "O parâmetro 'size' deve ser maior que zero.";
 
     public static final String CATEGORIA_NAO_ENCONTRADA = "Categoria não encontrada com id: ";
     public static final String CATEGORIA_NOME_DUPLICADO = "Já existe uma categoria com o nome: ";
