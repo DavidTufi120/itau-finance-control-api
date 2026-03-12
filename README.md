@@ -15,6 +15,7 @@ API REST para controle de gastos e ganhos pessoais, desenvolvida como desafio t�
 | Spring Data JPA | 3.4.3 | Persistência e repositórios |
 | Spring Actuator | 3.4.3 | Observabilidade e healthcheck |
 | SpringDoc OpenAPI | 2.8.5 | Documentação Swagger UI |
+| New Relic APM | — | Monitoramento de métricas, transações e JVM em produção |
 | Lombok | — | Redução de boilerplate |
 | MySQL | 8 | Banco de dados de produção |
 | H2 | — | Banco em memória para desenvolvimento |
@@ -126,6 +127,8 @@ mvn spring-boot:run
 | `DB_USERNAME` | Usuário do banco | `sa` |
 | `DB_PASSWORD` | Senha do banco | _(vazio)_ |
 | `DB_DRIVER` | Driver JDBC | `org.h2.Driver` |
+| `NEW_RELIC_LICENSE_KEY` | License key do New Relic para monitoramento em produção | (não definido) |
+| `NEW_RELIC_APP_NAME` | Nome da aplicação no painel do New Relic | `finance-control-api` |
 
 ---
 
@@ -256,28 +259,41 @@ Em caso de falha, a API retorna um JSON padronizado com `codigo` e `mensagem`:
 
 ## Observabilidade
 
-A aplicação utiliza o **Spring Actuator** para monitoramento. Os seguintes endpoints estão disponíveis **sem necessidade de api-key**:
+A aplicação utiliza o **Spring Actuator** para monitoramento local e o **New Relic APM** para monitoramento em produção no Railway.
+
+### Endpoints Actuator disponíveis
 
 | Endpoint | Descrição |
 |---|---|
 | `GET /actuator/health` | Retorna o status da aplicação (`UP` ou `DOWN`) |
 | `GET /actuator/metrics` | Lista as métricas disponíveis |
 
-**Exemplos de métricas úteis:**
+**Exemplos de métricas úteis disponíveis atualmente:**
 ```
+GET /actuator/metrics/application.ready.time
+GET /actuator/metrics/application.started.time
 GET /actuator/metrics/http.server.requests
 GET /actuator/metrics/http.server.requests.active
-GET /actuator/metrics/application.ready.time
-GET /actuator/metrics/hikaricp.connections.active
 ```
+
+### Monitoramento no New Relic
+
+Em produção, a aplicação é iniciada com o **agente Java do New Relic** via `Dockerfile`, permitindo acompanhar:
+
+- transações e tempo de resposta
+- uso de JVM, memória e threads
+- dependências externas e banco de dados
+- erros técnicos da aplicação
+
+> Observação: os **logs detalhados da aplicação** continuam sendo visualizados no painel do Railway. O New Relic está configurado principalmente para **APM e métricas**.
 
 ---
 
 ## Deploy na nuvem (Railway)
 
-A API está publicada gratuitamente no **Railway** com banco MySQL provisionado na nuvem.
+A aplicação também está publicada no **Railway**, com banco MySQL provisionado na nuvem. Para melhor escabilidade e monitoramento, o deploy foi feito utilizando o **Dockerfile** do projeto, garantindo que a mesma imagem seja usada localmente e em produção.
 
-### Acessar a API em produção
+### Acessar a aplicação em produção
 
 | Recurso | URL |
 |---|---|
@@ -285,31 +301,13 @@ A API está publicada gratuitamente no **Railway** com banco MySQL provisionado 
 | Swagger UI | `https://itau-finance-control-api-production.up.railway.app/swagger-ui.html` |
 | Health | `https://itau-finance-control-api-production.up.railway.app/actuator/health` |
 
-> Todas as requisições exigem o header `api-key: aXRhw7o=`.
+> Todas as requisições para `/v1/**` exigem o header `api-key: aXRhw7o=`.
 
----
+### Observações
 
-### Como fazer o deploy no Railway (passo a passo)
-
-1. Acesse [railway.app](https://railway.app) e faça login com sua conta GitHub
-2. Clique em **New Project → Deploy from GitHub repo**
-3. Selecione o repositório `itau-finance-control-api`
-4. Clique em **Add Service → Database → MySQL** para provisionar o banco
-5. Nas variáveis de ambiente do serviço da API, configure:
-
-| Variável | Valor |
-|---|---|
-| `SPRING_PROFILES_ACTIVE` | `prod` |
-| `DB_URL` | `jdbc:mysql://<host_railway>:3306/<db_name>?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC` |
-| `DB_USERNAME` | _(copiar do painel MySQL do Railway)_ |
-| `DB_PASSWORD` | _(copiar do painel MySQL do Railway)_ |
-| `DB_DRIVER` | `com.mysql.cj.jdbc.Driver` |
-| `API_KEY` | `aXRhw7o=` |
-
-6. O Railway detecta o `Dockerfile` automaticamente e faz o build
-7. Após o deploy, acesse a URL gerada pelo Railway
-
-> O arquivo `railway.toml` na raiz do projeto já configura o builder, healthcheck e restart policy automaticamente.
+- O deploy em nuvem é **opcional** para uso do projeto.
+- O projeto pode ser executado localmente com **Docker Compose** ou diretamente com **Java + Maven**.
+- O ambiente publicado no Railway existe como apoio para demonstração da API e do monitoramento em produção.
 
 ---
 
