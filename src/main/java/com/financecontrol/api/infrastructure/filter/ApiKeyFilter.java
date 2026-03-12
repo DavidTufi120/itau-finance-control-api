@@ -56,7 +56,6 @@ public class ApiKeyFilter implements Filter {
         String uri = request.getRequestURI();
         return ApiKeyConstants.ACTUATOR_HEALTH_PATH.equals(uri)
                 || uri.startsWith(ApiKeyConstants.SWAGGER_UI_PATH)
-                || ApiKeyConstants.SWAGGER_HTML_PATH.equals(uri)
                 || uri.startsWith(ApiKeyConstants.OPENAPI_DOCS_PATH);
     }
 

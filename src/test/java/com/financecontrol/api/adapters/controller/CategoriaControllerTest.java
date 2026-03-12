@@ -74,7 +74,7 @@ class CategoriaControllerTest {
         ResponseEntity<CategoriaResponse> resposta = categoriaController.buscarPorId(1L);
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().id_categoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().idCategoria()).isEqualTo(1L);
         assertThat(resposta.getBody().nome()).isEqualTo("Transporte");
     }
 
@@ -85,7 +85,7 @@ class CategoriaControllerTest {
         ResponseEntity<CategoriaResponse> resposta = categoriaController.criar(request);
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().id_categoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().idCategoria()).isEqualTo(1L);
         assertThat(resposta.getBody().nome()).isEqualTo("Transporte");
         assertThat(resposta.getHeaders().getLocation()).isNotNull();
         assertThat(resposta.getHeaders().getLocation().toString()).contains("1");

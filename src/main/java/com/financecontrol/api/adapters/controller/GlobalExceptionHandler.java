@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
                 .orElse(null);
 
         String mensagem = firstError != null
-                ? String.format("O campo '%s' %s", firstError.getField(), firstError.getDefaultMessage())
+                ? resolverMensagemValidacao(firstError)
                 : "Requisição inválida";
 
         logger.warn("Erro de validação em {}: {}", request.getRequestURI(), mensagem);
@@ -41,6 +41,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiErrorResponse("erro_validacao", mensagem));
+    }
+
+    private String resolverMensagemValidacao(FieldError fieldError) {
+        String mensagemPadrao = fieldError.getDefaultMessage();
+
+        if (mensagemPadrao == null || mensagemPadrao.isBlank()) {
+            return String.format("O campo '%s' é inválido", fieldError.getField());
+        }
+
+        if (mensagemPadrao.startsWith("O campo") || mensagemPadrao.startsWith("O parâmetro")) {
+            return mensagemPadrao;
+        }
+
+        return String.format("O campo '%s' %s", fieldError.getField(), mensagemPadrao);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -111,7 +125,7 @@ public class GlobalExceptionHandler {
     private HttpStatus resolverStatus(String codigo) {
         return switch (codigo) {
             case MensagensErro.CODIGO_RECURSO_NAO_ENCONTRADO -> HttpStatus.NOT_FOUND;
-            case MensagensErro.CODIGO_NOME_INVALIDO, MensagensErro.CODIGO_ERRO_VALIDACAO -> HttpStatus.BAD_REQUEST;
+            case MensagensErro.CODIGO_ERRO_VALIDACAO -> HttpStatus.BAD_REQUEST;
             case MensagensErro.CODIGO_OPERACAO_NAO_PERMITIDA -> HttpStatus.UNPROCESSABLE_ENTITY;
             default -> HttpStatus.CONFLICT;
         };

@@ -60,6 +60,70 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    void deveRetornar400QuandoMensagemPadraoDoCampoForNula() {
+        FieldError fieldError = new FieldError("objeto", "nome", null, false, null, null, null);
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(java.util.List.of(fieldError));
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleValidationException(exception, request);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().codigo()).isEqualTo("erro_validacao");
+        assertThat(resposta.getBody().mensagem()).isEqualTo("O campo 'nome' é inválido");
+    }
+
+    @Test
+    void deveRetornar400QuandoMensagemPadraoDoCampoEstiverEmBranco() {
+        FieldError fieldError = new FieldError("objeto", "nome", "   ");
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(java.util.List.of(fieldError));
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleValidationException(exception, request);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().codigo()).isEqualTo("erro_validacao");
+        assertThat(resposta.getBody().mensagem()).isEqualTo("O campo 'nome' é inválido");
+    }
+
+    @Test
+    void deveRetornar400QuandoMensagemPadraoJaEstiverFormatadaComPrefixoDeCampo() {
+        FieldError fieldError = new FieldError("objeto", "nome", "O campo 'nome' é obrigatório");
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(java.util.List.of(fieldError));
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleValidationException(exception, request);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().codigo()).isEqualTo("erro_validacao");
+        assertThat(resposta.getBody().mensagem()).isEqualTo("O campo 'nome' é obrigatório");
+    }
+
+    @Test
+    void deveRetornar400QuandoMensagemPadraoJaEstiverFormatadaComPrefixoDeParametro() {
+        FieldError fieldError = new FieldError("objeto", "dataInicio", "O parâmetro 'data_inicio' é obrigatório");
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(java.util.List.of(fieldError));
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleValidationException(exception, request);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().codigo()).isEqualTo("erro_validacao");
+        assertThat(resposta.getBody().mensagem()).isEqualTo("O parâmetro 'data_inicio' é obrigatório");
+    }
+
+    @Test
     void deveRetornar400QuandoCorpoDaRequisicaoForInvalido() {
         HttpMessageNotReadableException exception = mock(HttpMessageNotReadableException.class);
         ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleNotReadableException(exception, request);
@@ -124,16 +188,16 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void deveRetornar400QuandoNegocioExceptionForNomeInvalido() {
+    void deveRetornar400QuandoNegocioExceptionForErroValidacao() {
         NegocioException exception = new NegocioException(
-                MensagensErro.CODIGO_NOME_INVALIDO,
-                MensagensErro.NOME_MUITO_CURTO
+                MensagensErro.CODIGO_ERRO_VALIDACAO,
+                MensagensErro.CAMPO_NOME_OBRIGATORIO
         );
         ResponseEntity<ApiErrorResponse> resposta = globalExceptionHandler.handleNegocioException(exception, request);
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().codigo()).isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
-        assertThat(resposta.getBody().mensagem()).isEqualTo(MensagensErro.NOME_MUITO_CURTO);
+        assertThat(resposta.getBody().codigo()).isEqualTo(MensagensErro.CODIGO_ERRO_VALIDACAO);
+        assertThat(resposta.getBody().mensagem()).isEqualTo(MensagensErro.CAMPO_NOME_OBRIGATORIO);
     }
 
     @Test

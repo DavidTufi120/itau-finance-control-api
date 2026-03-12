@@ -41,11 +41,11 @@ public interface SubcategoriaControllerDocs {
     ResponseEntity<SubcategoriaResponse> buscarPorId(
             @Parameter(description = "ID da subcategoria", required = true, example = "1") @PathVariable Long id);
 
-    @Operation(summary = "Criar subcategoria", description = "Cria uma nova subcategoria vinculada a uma categoria existente. O nome deve ser único dentro da mesma categoria e ter pelo menos 3 caracteres.")
+    @Operation(summary = "Criar subcategoria", description = "Cria uma nova subcategoria vinculada a uma categoria existente. O nome deve ser único dentro da mesma categoria.")
     @ApiResponse(responseCode = "201", description = "Subcategoria criada com sucesso",
             headers = @Header(name = "Location", description = "URL da subcategoria criada"),
             content = @Content(schema = @Schema(implementation = SubcategoriaResponse.class)))
-    @ApiResponse(responseCode = "400", description = "Dados inválidos (nome em branco, muito curto ou id_categoria ausente)",
+    @ApiResponse(responseCode = "400", description = "Dados inválidos (nome em branco ou id_categoria ausente)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     @ApiResponse(responseCode = "401", description = "api-key ausente ou inválida",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
@@ -59,10 +59,10 @@ public interface SubcategoriaControllerDocs {
                     content = @Content(schema = @Schema(implementation = SubcategoriaRequest.class)))
             @RequestBody @Valid SubcategoriaRequest request);
 
-    @Operation(summary = "Atualizar subcategoria", description = "Atualiza o nome e/ou categoria de uma subcategoria existente. O novo nome deve ser único dentro da categoria e ter pelo menos 3 caracteres.")
+    @Operation(summary = "Atualizar subcategoria", description = "Atualiza o nome e/ou categoria de uma subcategoria existente. O novo nome deve ser único dentro da categoria.")
     @ApiResponse(responseCode = "200", description = "Subcategoria atualizada com sucesso",
             content = @Content(schema = @Schema(implementation = SubcategoriaResponse.class)))
-    @ApiResponse(responseCode = "400", description = "Dados inválidos (nome em branco, muito curto ou id_categoria ausente)",
+    @ApiResponse(responseCode = "400", description = "Dados inválidos (nome em branco ou id_categoria ausente)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     @ApiResponse(responseCode = "401", description = "api-key ausente ou inválida",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))

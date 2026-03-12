@@ -56,7 +56,7 @@ class BalancoControllerTest {
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resposta.getBody()).isNotNull();
         assertThat(resposta.getBody().categoria()).isNotNull();
-        assertThat(resposta.getBody().categoria().id_categoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().categoria().idCategoria()).isEqualTo(1L);
         assertThat(resposta.getBody().categoria().nome()).isEqualTo("Transporte");
         assertThat(resposta.getBody().receita()).isEqualTo("2320.00");
         assertThat(resposta.getBody().despesa()).isEqualTo("1000.00");

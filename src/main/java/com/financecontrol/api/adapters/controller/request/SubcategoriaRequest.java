@@ -1,5 +1,6 @@
 package com.financecontrol.api.adapters.controller.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.financecontrol.api.domain.shared.MensagensErro;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,8 +12,9 @@ public record SubcategoriaRequest(
         @Size(max = 100, message = MensagensErro.CAMPO_NOME_TAMANHO_MAXIMO)
         String nome,
 
+        @JsonProperty("id_categoria")
         @NotNull(message = "O campo 'id_categoria' e obrigatorio")
         @Positive(message = "O campo 'id_categoria' deve ser um numero positivo")
-        Long id_categoria
+        Long idCategoria
 ) {
 }

@@ -78,7 +78,7 @@ class LancamentosControllerTest {
 
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().content().get(0).id_subcategoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().content().get(0).idSubcategoria()).isEqualTo(1L);
     }
 
     @Test
@@ -89,7 +89,7 @@ class LancamentosControllerTest {
 
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().id_lancamento()).isEqualTo(1L);
+        assertThat(resposta.getBody().idLancamento()).isEqualTo(1L);
         assertThat(resposta.getBody().valor()).isEqualByComparingTo("200.00");
     }
 
@@ -107,7 +107,7 @@ class LancamentosControllerTest {
 
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().id_lancamento()).isEqualTo(1L);
+        assertThat(resposta.getBody().idLancamento()).isEqualTo(1L);
         assertThat(resposta.getBody().valor()).isEqualByComparingTo("200.00");
         assertThat(resposta.getHeaders().getLocation()).isNotNull();
         assertThat(resposta.getHeaders().getLocation().toString()).contains("1");

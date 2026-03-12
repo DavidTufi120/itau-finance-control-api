@@ -188,16 +188,19 @@ class SubcategoriaServiceImplTest {
     }
 
     @Test
-    void deveLancarExcecaoAoCriarSubcategoriaComNomeMuitoCurto() {
+    void deveCriarSubcategoriaComNomeCurtoQuandoNaoForDuplicado() {
         Subcategoria novaSubcategoria = Subcategoria.criar("AB", 1L);
+        Subcategoria subcategoriaSalva = new Subcategoria(2L, "AB", 1L);
+        when(categoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(categoriaTransporte));
+        when(subcategoriaRepositoryPort.existsByNomeAndIdCategoria("AB", 1L)).thenReturn(false);
+        when(subcategoriaRepositoryPort.save(novaSubcategoria)).thenReturn(subcategoriaSalva);
 
-        assertThatThrownBy(() -> subcategoriaService.criar(novaSubcategoria))
-                .isInstanceOf(NegocioException.class)
-                .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
+        Subcategoria resultado = subcategoriaService.criar(novaSubcategoria);
 
-        verify(subcategoriaRepositoryPort, never()).save(any());
-        verify(categoriaRepositoryPort, never()).findById(any());
+        assertThat(resultado.getId()).isEqualTo(2L);
+        assertThat(resultado.getNome()).isEqualTo("AB");
+        verify(categoriaRepositoryPort).findById(1L);
+        verify(subcategoriaRepositoryPort).save(novaSubcategoria);
     }
 
     @Test
@@ -262,16 +265,19 @@ class SubcategoriaServiceImplTest {
     }
 
     @Test
-    void deveLancarExcecaoAoAtualizarComNomeMuitoCurto() {
+    void deveAtualizarSubcategoriaComNomeCurtoQuandoNaoForDuplicado() {
         Subcategoria dadosAtualizados = Subcategoria.criar("AB", 1L);
+        Subcategoria subcategoriaAtualizada = new Subcategoria(1L, "AB", 1L);
+        when(subcategoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(subcategoriaCombutivel));
+        when(categoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(categoriaTransporte));
+        when(subcategoriaRepositoryPort.existsByNomeAndIdCategoriaAndIdDiferente("AB", 1L, 1L)).thenReturn(false);
+        when(subcategoriaRepositoryPort.save(subcategoriaCombutivel)).thenReturn(subcategoriaAtualizada);
 
-        assertThatThrownBy(() -> subcategoriaService.atualizar(1L, dadosAtualizados))
-                .isInstanceOf(NegocioException.class)
-                .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
+        Subcategoria resultado = subcategoriaService.atualizar(1L, dadosAtualizados);
 
-        verify(subcategoriaRepositoryPort, never()).findById(any());
-        verify(subcategoriaRepositoryPort, never()).save(any());
+        assertThat(resultado.getNome()).isEqualTo("AB");
+        verify(subcategoriaRepositoryPort).findById(1L);
+        verify(subcategoriaRepositoryPort).save(subcategoriaCombutivel);
     }
 
     @Test

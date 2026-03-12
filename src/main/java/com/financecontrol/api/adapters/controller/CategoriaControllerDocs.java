@@ -40,7 +40,7 @@ public interface CategoriaControllerDocs {
     ResponseEntity<CategoriaResponse> buscarPorId(
             @Parameter(description = "ID da categoria", required = true, example = "1") @PathVariable Long id);
 
-    @Operation(summary = "Criar categoria", description = "Cria uma nova categoria. O nome deve ser único no sistema e ter pelo menos 3 caracteres.")
+    @Operation(summary = "Criar categoria", description = "Cria uma nova categoria. O nome deve ser único no sistema.")
     @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso",
             headers = @Header(name = "Location", description = "URL da categoria criada"),
             content = @Content(schema = @Schema(implementation = CategoriaResponse.class)))
@@ -56,7 +56,7 @@ public interface CategoriaControllerDocs {
                     content = @Content(schema = @Schema(implementation = CategoriaRequest.class)))
             @RequestBody @Valid CategoriaRequest request);
 
-    @Operation(summary = "Atualizar categoria", description = "Atualiza o nome de uma categoria existente. O novo nome deve ser único e ter pelo menos 3 caracteres.")
+    @Operation(summary = "Atualizar categoria", description = "Atualiza o nome de uma categoria existente. O novo nome deve ser único no sistema.")
     @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso",
             content = @Content(schema = @Schema(implementation = CategoriaResponse.class)))
     @ApiResponse(responseCode = "400", description = "Dados inválidos (nome em branco ou muito longo)",

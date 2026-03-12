@@ -43,17 +43,16 @@ class SubcategoriaTest {
         assertThatThrownBy(subcategoria::validarNome)
                 .isInstanceOf(NegocioException.class)
                 .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
+                .isEqualTo(MensagensErro.CODIGO_ERRO_VALIDACAO);
     }
 
     @Test
-    void deveLancarExcecaoQuandoNomeForMenorQueMinimo() {
+    void devePermitirNomeComDoisCaracteres() {
         Subcategoria subcategoria = Subcategoria.criar("AB", 1L);
 
-        assertThatThrownBy(subcategoria::validarNome)
-                .isInstanceOf(NegocioException.class)
-                .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
+        subcategoria.validarNome();
+
+        assertThat(subcategoria.getNome()).isEqualTo("AB");
     }
 
     @Test
@@ -63,7 +62,7 @@ class SubcategoriaTest {
         assertThatThrownBy(subcategoria::validarNome)
                 .isInstanceOf(NegocioException.class)
                 .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
+                .isEqualTo(MensagensErro.CODIGO_ERRO_VALIDACAO);
     }
 
     @Test

@@ -121,14 +121,18 @@ class CategoriaServiceImplTest {
     }
 
     @Test
-    void deveLancarExcecaoAoCriarCategoriaComNomeMuitoCurto() {
+    void deveCriarCategoriaComNomeCurtoQuandoNaoForDuplicado() {
         Categoria novaCategoria = Categoria.criar("AB");
-        assertThatThrownBy(() -> categoriaService.criar(novaCategoria))
-                .isInstanceOf(NegocioException.class)
-                .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
-        verify(categoriaRepositoryPort, never()).existsByNome(any());
-        verify(categoriaRepositoryPort, never()).save(any());
+        Categoria categoriaSalva = new Categoria(3L, "AB");
+        when(categoriaRepositoryPort.existsByNome("AB")).thenReturn(false);
+        when(categoriaRepositoryPort.save(novaCategoria)).thenReturn(categoriaSalva);
+
+        Categoria resultado = categoriaService.criar(novaCategoria);
+
+        assertThat(resultado.getId()).isEqualTo(3L);
+        assertThat(resultado.getNome()).isEqualTo("AB");
+        verify(categoriaRepositoryPort).existsByNome("AB");
+        verify(categoriaRepositoryPort).save(novaCategoria);
     }
 
     @Test
@@ -168,14 +172,18 @@ class CategoriaServiceImplTest {
     }
 
     @Test
-    void deveLancarExcecaoAoAtualizarComNomeMuitoCurto() {
+    void deveAtualizarCategoriaComNomeCurtoQuandoNaoForDuplicado() {
         Categoria dadosAtualizados = Categoria.criar("AB");
-        assertThatThrownBy(() -> categoriaService.atualizar(1L, dadosAtualizados))
-                .isInstanceOf(NegocioException.class)
-                .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
-        verify(categoriaRepositoryPort, never()).findById(any());
-        verify(categoriaRepositoryPort, never()).save(any());
+        Categoria categoriaAtualizada = new Categoria(1L, "AB");
+        when(categoriaRepositoryPort.findById(1L)).thenReturn(Optional.of(categoriaTransporte));
+        when(categoriaRepositoryPort.existsByNomeAndIdDiferente("AB", 1L)).thenReturn(false);
+        when(categoriaRepositoryPort.save(categoriaTransporte)).thenReturn(categoriaAtualizada);
+
+        Categoria resultado = categoriaService.atualizar(1L, dadosAtualizados);
+
+        assertThat(resultado.getNome()).isEqualTo("AB");
+        verify(categoriaRepositoryPort).findById(1L);
+        verify(categoriaRepositoryPort).save(categoriaTransporte);
     }
 
     @Test

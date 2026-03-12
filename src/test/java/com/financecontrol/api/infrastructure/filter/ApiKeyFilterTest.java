@@ -106,4 +106,30 @@ class ApiKeyFilterTest {
         verify(filterChain, never()).doFilter(request, response);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
+
+    @Test
+    void devePermitirRequisicaoOptionsSemApiKey() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.setMethod("OPTIONS");
+        request.setRequestURI("/v1/categorias");
+
+        apiKeyFilter.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/swagger-ui/swagger-config", "/v3/api-docs/swagger-config", "/v3/api-docs.yaml"})
+    void devePermitirCaminhosPublicosPorPrefixoSemApiKey(String caminho) throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.setRequestURI(caminho);
+
+        apiKeyFilter.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
 }

@@ -5,8 +5,6 @@ import com.financecontrol.api.domain.shared.NegocioException;
 
 public class Categoria {
 
-    private static final int NOME_TAMANHO_MINIMO = 3;
-
     private final Long id;
     private String nome;
 
@@ -20,10 +18,10 @@ public class Categoria {
     }
 
     public void validarNome() {
-        if (this.nome == null || this.nome.trim().length() < NOME_TAMANHO_MINIMO) {
+        if (this.nome == null || this.nome.isBlank()) {
             throw new NegocioException(
-                    MensagensErro.CODIGO_NOME_INVALIDO,
-                    MensagensErro.NOME_MUITO_CURTO
+                    MensagensErro.CODIGO_ERRO_VALIDACAO,
+                    MensagensErro.CAMPO_NOME_OBRIGATORIO
             );
         }
     }

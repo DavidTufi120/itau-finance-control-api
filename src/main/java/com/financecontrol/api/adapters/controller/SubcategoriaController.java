@@ -51,7 +51,7 @@ public class SubcategoriaController implements SubcategoriaControllerDocs {
     @PostMapping
     public ResponseEntity<SubcategoriaResponse> criar(@RequestBody @Valid SubcategoriaRequest request) {
         Subcategoria subcategoriaCriada = subcategoriaService.criar(
-                Subcategoria.criar(request.nome(), request.id_categoria()));
+                Subcategoria.criar(request.nome(), request.idCategoria()));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(subcategoriaCriada.getId())
@@ -64,7 +64,7 @@ public class SubcategoriaController implements SubcategoriaControllerDocs {
             @PathVariable Long id,
             @RequestBody @Valid SubcategoriaRequest request) {
         Subcategoria subcategoriaAtualizada = subcategoriaService.atualizar(
-                id, Subcategoria.criar(request.nome(), request.id_categoria()));
+                id, Subcategoria.criar(request.nome(), request.idCategoria()));
         return ResponseEntity.ok(toResponse(subcategoriaAtualizada));
     }
 

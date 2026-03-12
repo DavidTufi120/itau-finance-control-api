@@ -92,6 +92,22 @@ class BalancoServiceImplTest {
     }
 
     @Test
+    void deveLancarExcecaoQuandoDataInicioForMaiorQueDataFim() {
+        LocalDate dataInicioInvalida = LocalDate.of(2021, 2, 1);
+        LocalDate dataFimInvalida = LocalDate.of(2021, 1, 31);
+
+        assertThatThrownBy(() -> balancoService.calcular(dataInicioInvalida, dataFimInvalida, null))
+                .isInstanceOf(NegocioException.class)
+                .hasMessage(MensagensErro.PERIODO_INVALIDO)
+                .extracting("codigo")
+                .isEqualTo(MensagensErro.CODIGO_ERRO_VALIDACAO);
+
+        verify(categoriaRepositoryPort, never()).findById(anyLong());
+        verify(balancoRepositoryPort, never()).somarReceitas(any(), any(), any());
+        verify(balancoRepositoryPort, never()).somarDespesas(any(), any(), any());
+    }
+
+    @Test
     void deveCalcularSaldoPositivoQuandoReceitaMaiorQueDespesa() {
         when(balancoRepositoryPort.somarReceitas(dataInicio, dataFim, null)).thenReturn(new BigDecimal("500.00"));
         when(balancoRepositoryPort.somarDespesas(dataInicio, dataFim, null)).thenReturn(new BigDecimal("200.00"));

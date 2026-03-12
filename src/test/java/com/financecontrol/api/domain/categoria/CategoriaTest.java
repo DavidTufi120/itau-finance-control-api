@@ -34,9 +34,9 @@ class CategoriaTest {
         Categoria categoria = Categoria.criar(null);
         assertThatThrownBy(categoria::validarNome)
                 .isInstanceOf(NegocioException.class)
-                .hasMessage(MensagensErro.NOME_MUITO_CURTO)
+                .hasMessage(MensagensErro.CAMPO_NOME_OBRIGATORIO)
                 .extracting("codigo")
-                .isEqualTo(MensagensErro.CODIGO_NOME_INVALIDO);
+                .isEqualTo(MensagensErro.CODIGO_ERRO_VALIDACAO);
     }
 
     @Test
@@ -44,19 +44,18 @@ class CategoriaTest {
         Categoria categoria = Categoria.criar("");
         assertThatThrownBy(categoria::validarNome)
                 .isInstanceOf(NegocioException.class)
-                .hasMessage(MensagensErro.NOME_MUITO_CURTO);
+                .hasMessage(MensagensErro.CAMPO_NOME_OBRIGATORIO);
     }
 
     @Test
-    void deveLancarExcecaoQuandoNomeTiverMenosDeTresCaracteres() {
+    void devePermitirNomeComDoisCaracteres() {
         Categoria categoria = Categoria.criar("AB");
-        assertThatThrownBy(categoria::validarNome)
-                .isInstanceOf(NegocioException.class)
-                .hasMessage(MensagensErro.NOME_MUITO_CURTO);
+        categoria.validarNome();
+        assertThat(categoria.getNome()).isEqualTo("AB");
     }
 
     @Test
-    void devePassarValidacaoComNomeExatamenteTresCaracteres() {
+    void devePassarValidacaoComNomePreenchido() {
         Categoria categoria = Categoria.criar("ABC");
         categoria.validarNome();
         assertThat(categoria.getNome()).isEqualTo("ABC");
@@ -67,6 +66,6 @@ class CategoriaTest {
         Categoria categoria = Categoria.criar("   ");
         assertThatThrownBy(categoria::validarNome)
                 .isInstanceOf(NegocioException.class)
-                .hasMessage(MensagensErro.NOME_MUITO_CURTO);
+                .hasMessage(MensagensErro.CAMPO_NOME_OBRIGATORIO);
     }
 }

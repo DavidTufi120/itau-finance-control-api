@@ -86,7 +86,7 @@ class SubcategoriaControllerTest {
 
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().content().get(0).id_subcategoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().content().get(0).idSubcategoria()).isEqualTo(1L);
     }
 
     @Test
@@ -97,9 +97,9 @@ class SubcategoriaControllerTest {
 
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().id_subcategoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().idSubcategoria()).isEqualTo(1L);
         assertThat(resposta.getBody().nome()).isEqualTo("Combustivel");
-        assertThat(resposta.getBody().id_categoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().idCategoria()).isEqualTo(1L);
     }
 
     @Test
@@ -111,7 +111,7 @@ class SubcategoriaControllerTest {
 
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(resposta.getBody()).isNotNull();
-        assertThat(resposta.getBody().id_subcategoria()).isEqualTo(1L);
+        assertThat(resposta.getBody().idSubcategoria()).isEqualTo(1L);
         assertThat(resposta.getBody().nome()).isEqualTo("Combustivel");
         assertThat(resposta.getHeaders().getLocation()).isNotNull();
         assertThat(resposta.getHeaders().getLocation().toString()).contains("1");

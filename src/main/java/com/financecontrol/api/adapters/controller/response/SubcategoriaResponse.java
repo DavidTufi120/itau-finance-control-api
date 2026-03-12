@@ -1,7 +1,11 @@
 package com.financecontrol.api.adapters.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record SubcategoriaResponse(
-        Long id_subcategoria,
+        @JsonProperty("id_subcategoria")
+        Long idSubcategoria,
         String nome,
-        Long id_categoria
+        @JsonProperty("id_categoria")
+        Long idCategoria
 ) {}
